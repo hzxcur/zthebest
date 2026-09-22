@@ -1,0 +1,64 @@
+===== just the dis
+
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+local LocalPlayer = Players.LocalPlayer
+
+local API =
+    "https://roblox-script-users.hectorantunezjr.workers.dev"
+
+local function LogScriptExecution()
+
+    if not LocalPlayer then
+        return
+    end
+
+    local data = {
+        userId = LocalPlayer.UserId,
+        username = LocalPlayer.Name,
+        displayName = LocalPlayer.DisplayName,
+        placeId = game.PlaceId,
+        jobId = game.JobId
+    }
+
+    local success, response =
+        pcall(function()
+
+            return request({
+                Url = API .. "/execute-log",
+
+                Method = "POST",
+
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+
+                Body = HttpService:JSONEncode(data)
+            })
+
+        end)
+
+    if not success then
+
+        warn(
+            "[mono]",
+            response
+        )
+
+        return
+    end
+
+    if response then
+
+        print(
+            "[monoz]",
+            response.StatusCode
+        )
+
+    end
+
+end
+
+--// ronetim
+LogScriptExecution()
